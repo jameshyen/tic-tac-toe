@@ -10,11 +10,13 @@ const rl = readline.createInterface({
 let userSwitch = false; // X is false, O is true.
 let inPlay = true;
 
-const board = [
+const blank = [
   ['_', '_', '_'],
   ['_', '_', '_'],
   ['_', '_', '_'],
 ];
+
+const board = blank.slice();
 
 const player = () => userSwitch ? 'O' : 'X';
 
@@ -46,10 +48,9 @@ const printBoard = () => {
   if (checkWin()) {
     userSwitch = !userSwitch;
     inPlay = false;
-    console.log(`${player()} wins!`);
+    console.log(`${player()} wins! Play again? (y/n)`);
   } else {
     console.log(`\n${playerName}'s turn...`);
-    // console.log('\n');
   }
 };
 
@@ -79,7 +80,17 @@ rl.on('line', (command) => {
       console.log('Place your move using the following command: x, y.');
     }
   } else {
-    console.log('Game is over.');
+    if (/[yn]/.test(command)) {
+      if (command === 'y') {
+        userSwitch = false;
+        board = blank.slice();
+        printBoard();
+      } else {
+        process.exit();
+      }
+    } else {
+      console.log('Game is over. Play again? (y/n)');
+    }
   }
 });
 
