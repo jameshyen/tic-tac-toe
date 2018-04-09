@@ -8,6 +8,7 @@ const rl = readline.createInterface({
 });
 
 let userSwitch = false; // X is false, O is true.
+let inPlay = true;
 
 const board = [
   [null, null, null],
@@ -16,6 +17,22 @@ const board = [
 ];
 
 const player = () => userSwitch ? 'O' : 'X';
+
+const checkRows = () =>
+  board[0][0] && board[0][0] === board[0][1] && board[0][1] === board[0][2] ||
+  board[1][0] && board[1][0] === board[1][1] && board[1][1] === board[1][2] ||
+  board[2][0] && board[2][0] === board[2][1] && board[2][1] === board[2][2];
+
+const checkColumns = () =>
+  board[0][0] && board[0][0] === board[1][0] && board[1][0] === board[2][0] ||
+  board[0][1] && board[0][1] === board[1][1] && board[1][1] === board[2][1] ||
+  board[0][2] && board[0][2] === board[1][2] && board[1][2] === board[2][2];
+
+const checkDiagonals = () =>
+  board[0][0] && board[0][0] === board[1][1] && board[1][1] === board[2][2] ||
+  board[2][0] && board[2][0] === board[1][1] && board[1][1] === board[0][2];
+
+const checkWin = () => checkRows() || checkColumns() || checkDiagonals();
 
 const printBoard = () => {
   const playerName = player();
@@ -26,31 +43,44 @@ const printBoard = () => {
     });
     process.stdout.write('\n');
   });
-  console.log(`\n${playerName}'s turn...`);
+  if (checkWin()) {
+    userSwitch = !userSwitch;
+    inPlay = false;
+    console.log(`${player()} wins!`);
+  } else {
+    console.log(`\n${playerName}'s turn...`);
+    console.log('\n-----\n');
+  }
 };
 
 rl.on('line', (command) => {
-  const playerName = player();
-  if (/\d,[ ]?\d/.test(command)) {
-    const matches = command.match(/(\d),[ ]?(\d)/);
-    let [_, x, y] = matches;
-    x = parseInt(x);
-    y = parseInt(y);
-    if (x > 3 || x < 1 || y > 3 || y < 1) {
-      console.log('Your move is out of bounds!');
-    } else {
-      x -= 1;
-      y -= 1;
-      if (!board[x][y]) {
-        board[x][y] = playerName;
-        console.log(`\n${playerName} does: ${command}\n`);
-        userSwitch = !userSwitch;
-        printBoard();
+  if (inPlay) {
+    const playerName = player();
+    if (/\d,[ ]?\d/.test(command)) {
+      const matches = command.match(/(\d),[ ]?(\d)/);
+      let [_, x, y] = matches;
+      x = parseInt(x);
+      y = parseInt(y);
+      if (x > 3 || x < 1 || y > 3 || y < 1) {
+        console.log('Your move is out of bounds!');
       } else {
-        console.log('That spot is taken.');
+        x -= 1;
+        y -= 1;
+        if (!board[x][y]) {
+          board[x][y] = playerName;
+          console.log(`\n${playerName} does: ${command}\n`);
+          userSwitch = !userSwitch;
+          printBoard();
+        } else {
+          console.log('That spot is taken.');
+        }
       }
+    } else {
+      console.log('Place your move using the following command: x, y.');
     }
   } else {
-    console.log('Place your move using the following command: x, y.');
+    console.log('Game is over.');
   }
 });
+
+printBoard();
