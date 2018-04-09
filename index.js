@@ -11,26 +11,26 @@ let userSwitch = false; // X is false, O is true.
 let inPlay = true;
 
 const board = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
+  ['_', '_', '_'],
+  ['_', '_', '_'],
+  ['_', '_', '_'],
 ];
 
 const player = () => userSwitch ? 'O' : 'X';
 
 const checkRows = () =>
-  board[0][0] && board[0][0] === board[0][1] && board[0][1] === board[0][2] ||
-  board[1][0] && board[1][0] === board[1][1] && board[1][1] === board[1][2] ||
-  board[2][0] && board[2][0] === board[2][1] && board[2][1] === board[2][2];
+  board[0][0] !== '_' && board[0][0] === board[0][1] && board[0][1] === board[0][2] ||
+  board[1][0] !== '_' && board[1][0] === board[1][1] && board[1][1] === board[1][2] ||
+  board[2][0] !== '_' && board[2][0] === board[2][1] && board[2][1] === board[2][2];
 
 const checkColumns = () =>
-  board[0][0] && board[0][0] === board[1][0] && board[1][0] === board[2][0] ||
-  board[0][1] && board[0][1] === board[1][1] && board[1][1] === board[2][1] ||
-  board[0][2] && board[0][2] === board[1][2] && board[1][2] === board[2][2];
+  board[0][0] !== '_' && board[0][0] === board[1][0] && board[1][0] === board[2][0] ||
+  board[0][1] !== '_' && board[0][1] === board[1][1] && board[1][1] === board[2][1] ||
+  board[0][2] !== '_' && board[0][2] === board[1][2] && board[1][2] === board[2][2];
 
 const checkDiagonals = () =>
-  board[0][0] && board[0][0] === board[1][1] && board[1][1] === board[2][2] ||
-  board[2][0] && board[2][0] === board[1][1] && board[1][1] === board[0][2];
+  board[0][0] !== '_' && board[0][0] === board[1][1] && board[1][1] === board[2][2] ||
+  board[2][0] !== '_' && board[2][0] === board[1][1] && board[1][1] === board[0][2];
 
 const checkWin = () => checkRows() || checkColumns() || checkDiagonals();
 
@@ -49,7 +49,7 @@ const printBoard = () => {
     console.log(`${player()} wins!`);
   } else {
     console.log(`\n${playerName}'s turn...`);
-    console.log('\n-----\n');
+    // console.log('\n');
   }
 };
 
@@ -66,7 +66,7 @@ rl.on('line', (command) => {
       } else {
         x -= 1;
         y -= 1;
-        if (!board[x][y]) {
+        if (board[x][y] === '_') {
           board[x][y] = playerName;
           console.log(`\n${playerName} does: ${command}\n`);
           userSwitch = !userSwitch;
