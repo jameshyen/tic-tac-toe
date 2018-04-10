@@ -16,7 +16,14 @@ const blank = [
   ['_', '_', '_'],
 ];
 
-let board = blank.slice();
+let board = [];
+
+const wipeBoard = () => {
+  board = [];
+  blank.forEach((row) => {
+    board.push(row.slice())
+  });
+};
 
 const player = () => userSwitch ? 'O' : 'X';
 
@@ -84,9 +91,7 @@ rl.on('line', (command) => {
       if (command === 'y') {
         inPlay = true;
         userSwitch = false;
-        board = [];
-        board = blank.slice();
-        console.log(board);
+        wipeBoard();
         printBoard();
       } else {
         process.exit();
@@ -97,4 +102,5 @@ rl.on('line', (command) => {
   }
 });
 
+wipeBoard();
 printBoard();
