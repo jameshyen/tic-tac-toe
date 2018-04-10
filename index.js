@@ -57,7 +57,7 @@ const printBoard = () => {
 rl.on('line', (command) => {
   if (inPlay) {
     const playerName = player();
-    if (/\d,[ ]?\d/.test(command)) {
+    if (/^\d,[ ]?\d$/.test(command)) {
       const matches = command.match(/(\d),[ ]?(\d)/);
       let [_, x, y] = matches;
       x = parseInt(x);
@@ -80,7 +80,7 @@ rl.on('line', (command) => {
       console.log('Place your move using the following command: x, y.');
     }
   } else {
-    if (/[yn]/.test(command)) {
+    if (/^[yn]$/.test(command)) {
       if (command === 'y') {
         userSwitch = false;
         board = blank.slice();
