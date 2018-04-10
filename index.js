@@ -82,8 +82,11 @@ rl.on('line', (command) => {
   } else {
     if (/^[yn]$/.test(command)) {
       if (command === 'y') {
+        inPlay = true;
         userSwitch = false;
+        board = [];
         board = blank.slice();
+        console.log(board);
         printBoard();
       } else {
         process.exit();
