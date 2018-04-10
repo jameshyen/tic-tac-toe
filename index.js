@@ -16,7 +16,7 @@ const blank = [
   ['_', '_', '_'],
 ];
 
-const board = blank.slice();
+let board = blank.slice();
 
 const player = () => userSwitch ? 'O' : 'X';
 
