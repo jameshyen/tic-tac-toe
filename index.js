@@ -1,5 +1,3 @@
-// https://stackoverflow.com/questions/20086849/how-to-read-from-stdin-line-by-line-in-node
-
 const readline = require('readline');
 const rl = readline.createInterface({
   input: process.stdin,
@@ -7,7 +5,7 @@ const rl = readline.createInterface({
   terminal: false,
 });
 
-let userSwitch = false; // X is false, O is true.
+let userSwitch = false;
 let inPlay = true;
 
 const blank = [
